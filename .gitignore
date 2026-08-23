@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local estimate submissions written by the stubbed API route
+.tmp/
+
+# Static export output and its build-time API stash
+out/
+.api-stash/

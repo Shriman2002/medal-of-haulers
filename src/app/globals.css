@@ -1,26 +1,147 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   Medal of Haulers design tokens.
+   Sourced from design_handoff_medal_of_haulers/README.md — "Design Tokens".
+   Flat, architectural: zero radius, no shadows, no transitions, 2px rules.
+   ========================================================================== */
+
+@theme {
+  /* Navy family — dark surfaces */
+  --color-navy: #05101f;
+  --color-navy-raised: #12203a;
+  --color-navy-menu: #0a1730;
+  --color-navy-rule: #16233c;
+  --color-navy-rule-alt: #2a3a55;
+  --color-navy-border-muted: #46536b;
+
+  /* Gold family — accent surfaces */
+  --color-gold: #e2a927;
+  --color-gold-light: #f2cf7a;
+  --color-gold-deep: #b8851a;
+  --color-gold-shadow: #3d2f08;
+  --color-gold-tint: #faf3e2;
+
+  /* Light surfaces and text */
+  --color-page: #f4f2ee;
+  --color-ink: #1a1a19;
+  --color-ink-70: #4a4a47;
+  --color-ink-55: #6b6b67;
+  --color-cream: #f7f4ee;
+
+  /* Text on navy */
+  --color-slate-text: #c3c9d3;
+  --color-slate-muted: #8c98a9;
+  --color-footer-text: #9fa7b4;
+  --color-footer-dim: #6d7889;
+  --color-footer-link: #d6d2c9;
+
+  /* Photo-placeholder hatch + light row rules */
+  --color-hatch-a: #dedbd4;
+  --color-hatch-b: #e9e6e0;
+  --color-caption: #5b5b58;
+
+  /* Type */
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+
+  --text-hero: clamp(42px, 6vw, 66px);
+  --text-page-h1: clamp(30px, 4.6vw, 48px);
+  --text-section-h2: clamp(28px, 4vw, 38px);
+  --text-section-h2-sm: clamp(26px, 3.4vw, 34px);
+  --text-block-h2: clamp(26px, 3.6vw, 36px);
+  --text-figure: clamp(30px, 4vw, 44px);
+  --text-price: clamp(28px, 4vw, 40px);
+  --text-tagline: clamp(15px, 2vw, 19px);
+  --text-banner: clamp(26px, 3.6vw, 40px);
+  --text-lead: clamp(18px, 2.4vw, 22px);
+  --text-quote: clamp(20px, 2.6vw, 26px);
+
+  /* The design's single non-default breakpoint: desktop nav ⇄ mobile chrome */
+  --breakpoint-nav: 1140px;
+
+  /* Border radius: 0 everywhere. Structure comes from 2px rules, never curves. */
+  --radius-none: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Section rhythm — ported from the prototype's .pad / .hpad / grid utilities. */
+@utility pad {
+  padding: 60px clamp(20px, 4vw, 52px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility hpad {
+  padding: 40px clamp(20px, 4vw, 52px);
+}
+
+/* Cells carry their own borders, so these grids run at gap 0. */
+@utility mohgrid {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+@utility mohsplit {
+  display: grid;
+  gap: 44px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+@utility mohbadges {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(5, 1fr);
+  @media (width <= 900px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Diagonal-hatch fill standing in for photography not yet delivered. */
+@utility hatch {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-hatch-a) 0 8px,
+    var(--color-hatch-b) 8px 16px
+  );
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+  }
+
+  /* Room for the fixed mobile action bar. */
+  @media (width <= 1140px) {
+    body {
+      padding-bottom: 64px;
+    }
+  }
+
+  /* Gold focus ring, globally. Do not lose this. */
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  /* The flat style depends on instant state changes — nothing eases or floats. */
+  *,
+  *::before,
+  *::after {
+    border-radius: 0;
+    box-shadow: none;
+    transition: none;
+    animation: none;
+  }
 }

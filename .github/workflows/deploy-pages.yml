@@ -1,0 +1,64 @@
+# Builds the static client-review site and publishes it to GitHub Pages.
+#
+# This is a REVIEW deployment, not production:
+#   - the estimate form runs in demo mode (no server, nothing is sent)
+#   - the site is noindex + robots-disallowed so it can never compete with the
+#     real domain in search
+# Production hosting (AWS or Vercel) is a separate pipeline.
+name: Deploy review site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_PATH: /medal-of-haulers
+      NEXT_PUBLIC_SITE_URL: https://shriman2002.github.io/medal-of-haulers
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verify
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run check:copy
+
+      - name: Build static export
+        run: npm run build:static
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
