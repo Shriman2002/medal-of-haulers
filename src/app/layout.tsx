@@ -49,7 +49,11 @@ const localBusinessJsonLd = {
   priceRange: "$$",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={archivo.variable}>
       <body className="flex min-h-screen flex-col">
