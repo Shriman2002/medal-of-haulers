@@ -96,8 +96,39 @@
   display: grid;
   gap: 0;
   grid-template-columns: repeat(5, 1fr);
+
+  /* Dividers hang off each cell's LEFT edge and are dropped on the first cell
+     of every row. Doing it this way (rather than border-right) means a rule can
+     never land on the container's outer edge, at any column count. */
+  > * {
+    border-left: 2px solid var(--color-navy);
+  }
+  > :nth-child(5n + 1) {
+    border-left: 0;
+  }
+
   @media (width <= 900px) {
     grid-template-columns: repeat(2, 1fr);
+
+    /* Two columns: column 1 is every odd cell. */
+    > :nth-child(5n + 1) {
+      border-left: 2px solid var(--color-navy);
+    }
+    > :nth-child(odd) {
+      border-left: 0;
+    }
+
+    /* Separate the wrapped rows — with five badges in two columns there are
+       now three rows, which had nothing between them. */
+    > :nth-child(n + 3) {
+      border-top: 2px solid var(--color-navy);
+    }
+
+    /* An odd number of badges leaves the last one alone in a half-row; let it
+       run the full width instead of stranding an empty cell beside it. */
+    > :last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
   }
 }
 

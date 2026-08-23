@@ -67,12 +67,10 @@ export default function HomePage() {
         {/* Badge strip: the bottom border sits on the container, not the cells,
             so the rule stays unbroken when the grid wraps to two columns. */}
         <div className="mohbadges border-b-2 border-navy bg-gold">
-          {BADGES.map((badge, i) => (
+          {BADGES.map((badge) => (
             <span
               key={badge}
-              className={`px-5 py-[18px] text-[12px] font-extrabold uppercase tracking-[.1em] text-navy ${
-                i < BADGES.length - 1 ? "border-r-2 border-navy" : ""
-              }`}
+              className="px-5 py-[18px] text-[12px] font-extrabold uppercase tracking-[.1em] text-navy"
             >
               {badge}
             </span>
