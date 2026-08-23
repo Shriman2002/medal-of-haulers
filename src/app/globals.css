@@ -124,13 +124,16 @@
       border-top: 2px solid var(--color-navy);
     }
 
-    /* An odd number of badges leaves the last one alone in a half-row; let it
-       run the full width instead of stranding an empty cell beside it, and
-       centre it — the only centred text on the site, because flush left across
-       a full-width row reads as a stray fragment rather than a badge. */
+    /* Centred only once the strip wraps. The site is otherwise flush left, but
+       in a narrow two-up grid the ragged left edge reads as misalignment. */
+    > * {
+      text-align: center;
+    }
+
+    /* An odd badge count leaves the last one alone in a half-row; let it run
+       the full width rather than stranding an empty cell beside it. */
     > :last-child:nth-child(odd) {
       grid-column: 1 / -1;
-      text-align: center;
     }
   }
 }
