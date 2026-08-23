@@ -125,9 +125,12 @@
     }
 
     /* An odd number of badges leaves the last one alone in a half-row; let it
-       run the full width instead of stranding an empty cell beside it. */
+       run the full width instead of stranding an empty cell beside it, and
+       centre it — the only centred text on the site, because flush left across
+       a full-width row reads as a stray fragment rather than a badge. */
     > :last-child:nth-child(odd) {
       grid-column: 1 / -1;
+      text-align: center;
     }
   }
 }
