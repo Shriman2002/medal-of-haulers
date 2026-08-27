@@ -16,7 +16,7 @@ import {
   type ServiceOption,
 } from "@/content/site";
 import { estimateSchema, type EstimateInput } from "@/lib/estimate-schema";
-import { IS_DEMO } from "@/lib/metadata";
+import { FORM_MODE } from "@/lib/metadata";
 import { Button } from "@/components/ui/Button";
 import { Field, StepHeading, controlClass } from "./fields";
 import { PhotoPicker } from "./PhotoPicker";
@@ -65,10 +65,10 @@ export function EstimateForm() {
     setStatus("submitting");
     setErrorMessage("");
 
-    // The static review build has no server. Everything above this point still
-    // runs — validation, conditional panels, photo checks — so the client sees
-    // the real flow; only the delivery is skipped. Nothing is sent or stored.
-    if (IS_DEMO) {
+    // Review build: everything above still runs — validation, conditional
+    // panels, photo checks — so the client sees the real flow. Only delivery is
+    // skipped. Safe here because nobody real submits on the review site.
+    if (FORM_MODE === "demo") {
       setStatus("success");
       return;
     }
@@ -325,20 +325,45 @@ export function EstimateForm() {
           </div>
         ) : null}
 
-        <div className="flex flex-wrap items-center gap-[18px]">
-          <Button
-            type="submit"
-            variant="gold"
-            size="xl"
-            disabled={status === "submitting"}
-          >
-            {status === "submitting" ? FORM.submitting : FORM.submit}
-          </Button>
-          <span className="flex items-center gap-2 text-[12.5px] text-ink-55">
-            <Lock size={15} strokeWidth={2} className="stroke-gold-deep" />
-            {FORM.security}
-          </span>
-        </div>
+        {FORM_MODE === "offline" ? (
+          // No backend in this build. Never show a submit button that silently
+          // discards a real customer's request — send them to a channel that
+          // actually reaches the business.
+          <div className="border-2 border-gold-deep bg-gold-tint p-6">
+            <h2 className="text-[13px] font-extrabold uppercase tracking-[.16em]">
+              Online requests aren&apos;t switched on yet
+            </h2>
+            <div className="mb-[18px] mt-1.5 h-0.5 bg-gold-deep" />
+            <p className="mb-5 max-w-[64ch] text-[15px] leading-[1.65] text-ink-70">
+              We&apos;re still setting this up. Call or email us with the details
+              above and we&apos;ll get straight back to you with a free quote —
+              photos are welcome by email.
+            </p>
+            <div className="flex flex-wrap gap-3.5">
+              <Button href={CONTACT.phoneHref} variant="gold" size="lg">
+                Call {CONTACT.phone}
+              </Button>
+              <Button href={CONTACT.emailHref} variant="outlineLight" size="lg">
+                Email Us
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center gap-[18px]">
+            <Button
+              type="submit"
+              variant="gold"
+              size="xl"
+              disabled={status === "submitting"}
+            >
+              {status === "submitting" ? FORM.submitting : FORM.submit}
+            </Button>
+            <span className="flex items-center gap-2 text-[12.5px] text-ink-55">
+              <Lock size={15} strokeWidth={2} className="stroke-gold-deep" />
+              {FORM.security}
+            </span>
+          </div>
+        )}
       </form>
 
       <aside className="min-w-0 border-2 border-ink bg-navy">

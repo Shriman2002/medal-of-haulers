@@ -10,7 +10,8 @@
     "prepare:logo": "node scripts/prepare-logo.mjs",
     "check:copy": "node scripts/check-copy.mjs",
     "typecheck": "tsc --noEmit",
-    "build:static": "node scripts/build-static.mjs"
+    "build:static": "node scripts/build-static.mjs",
+    "build:production": "node scripts/build-static.mjs --production"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

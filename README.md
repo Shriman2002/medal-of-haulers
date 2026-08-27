@@ -26,6 +26,7 @@ npm run dev
 | `npm run dev` | Dev server on :3000 |
 | `npm run build` | Production build (server target, `/api/estimate` live) |
 | `npm run build:static` | Static export to `out/` for the GitHub Pages review site |
+| `npm run build:production` | Static export for the live domain (requires `NEXT_PUBLIC_SITE_URL`) |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
 | `npm run check:copy` | Asserts every prose string in the design prototype still appears verbatim in `src/content/site.ts` |
@@ -123,9 +124,45 @@ is set at build time. Note that Next applies `basePath` to its own bundles and t
 `next/link`, but **not** to hand-written `<img src="/...">` — those go through
 `assetPath()` in `src/lib/asset-path.ts`. Use it for any new public/ asset.
 
-### Production
+### Production (Cloudflare Pages)
 
-Not yet deployed. The build is intentionally host-agnostic: all seven pages are
+Built with `npm run build:production`, which differs from the review build in
+three ways: served from the root (no base path), **indexable**, and the estimate
+form is **offline** rather than demo.
+
+The build refuses to run without `NEXT_PUBLIC_SITE_URL`, so it cannot silently
+ship the wrong canonical URLs.
+
+**Cloudflare Pages settings**
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build:production` |
+| Output directory | `out` |
+| Environment variable | `NEXT_PUBLIC_SITE_URL` = `https://<the-domain>` |
+| Environment variable | `NODE_VERSION` = `22` |
+
+Because the domain is in the same Cloudflare account, attaching it under
+**Custom domains** creates the DNS records and certificate automatically — there
+are no records to add by hand.
+
+### `FORM_MODE` — read this before changing it
+
+`src/lib/metadata.ts` exposes three modes, set via `NEXT_PUBLIC_FORM_MODE`:
+
+- **`live`** — posts to `/api/estimate`. Needs a server or a form endpoint.
+- **`demo`** — skips the network call and shows the success screen. **Review site
+  only.** Safe there because nobody real submits.
+- **`offline`** — no submit button; the form points to the phone and email.
+  The correct setting for a public static build with no backend.
+
+⚠️ **Never ship `demo` to a public domain.** It tells a real customer their
+request was received when nothing was sent — a lost job every time, and a
+customer who believes they have made contact.
+
+### Other hosts
+
+Not currently deployed there. The build is intentionally host-agnostic: all seven pages are
 statically generated and the only server dependency is the single
 `/api/estimate` route handler.
 
