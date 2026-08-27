@@ -33,11 +33,21 @@ if (existsSync(stashedApiDir)) {
 
 const isProduction = process.argv.includes("--production");
 
-if (isProduction && !process.env.NEXT_PUBLIC_SITE_URL) {
+/**
+ * The live domain, registered on the client's Cloudflare account.
+ *
+ * Deliberately a constant rather than a required env var: Workers Builds cannot
+ * set build variables until after the project exists, so requiring one would
+ * fail the very first deploy. NEXT_PUBLIC_SITE_URL still overrides it.
+ */
+const PRODUCTION_URL = "https://medalofhaulers.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || PRODUCTION_URL;
+
+// Cheap insurance against publishing the live site with a staging URL baked
+// into every canonical, the sitemap, and the OpenGraph tags.
+if (isProduction && /github\.io|localhost|example\./.test(siteUrl)) {
   throw new Error(
-    "NEXT_PUBLIC_SITE_URL must be set for a production build — it drives " +
-      "canonical URLs, OpenGraph, and the sitemap. Example: " +
-      "NEXT_PUBLIC_SITE_URL=https://example.com npm run build:production",
+    `Refusing to build production with a non-production site URL: ${siteUrl}`,
   );
 }
 
@@ -62,6 +72,7 @@ try {
       ...(isProduction
         ? {
             // Real domain: served from the root, indexable, form offline.
+            NEXT_PUBLIC_SITE_URL: siteUrl,
             NEXT_PUBLIC_BASE_PATH: "",
             NEXT_PUBLIC_PREVIEW: "",
             NEXT_PUBLIC_FORM_MODE: "offline",
@@ -79,7 +90,7 @@ try {
   console.log(
     `\nStatic export written to out/ — ${
       isProduction
-        ? `production, indexable, form offline, ${process.env.NEXT_PUBLIC_SITE_URL}`
+        ? `production, indexable, form offline, ${siteUrl}`
         : "review site, noindex, form in demo mode"
     }`,
   );

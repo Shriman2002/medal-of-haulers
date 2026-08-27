@@ -124,23 +124,31 @@ is set at build time. Note that Next applies `basePath` to its own bundles and t
 `next/link`, but **not** to hand-written `<img src="/...">` — those go through
 `assetPath()` in `src/lib/asset-path.ts`. Use it for any new public/ asset.
 
-### Production (Cloudflare Pages)
+### Production (Cloudflare Workers, static assets)
 
 Built with `npm run build:production`, which differs from the review build in
 three ways: served from the root (no base path), **indexable**, and the estimate
 form is **offline** rather than demo.
 
-The build refuses to run without `NEXT_PUBLIC_SITE_URL`, so it cannot silently
-ship the wrong canonical URLs.
+The build refuses to run if the resolved site URL looks like a staging one
+(github.io, localhost, example.*), so a preview URL cannot end up baked into
+every canonical, the sitemap, and the OpenGraph tags.
 
-**Cloudflare Pages settings**
+**Cloudflare Workers Builds settings**
 
 | Setting | Value |
 | --- | --- |
 | Build command | `npm run build:production` |
 | Output directory | `out` |
-| Environment variable | `NEXT_PUBLIC_SITE_URL` = `https://medalofhaulers.com` |
-| Environment variable | `NODE_VERSION` = `22` |
+| Deploy command | `npx wrangler deploy` |
+
+No build variables are required. The production domain is a constant in
+`scripts/build-static.mjs` (`NEXT_PUBLIC_SITE_URL` overrides it if ever needed),
+and Node is pinned by `.nvmrc`. Workers Builds cannot set build variables until
+after the project exists, so requiring either would fail the first deploy.
+
+Deploys are driven by `wrangler.jsonc` — an assets-only Worker pointing at
+`out/`, with no Worker script.
 
 Because the domain is in the same Cloudflare account, attaching it under
 **Custom domains** creates the DNS records and certificate automatically — there
