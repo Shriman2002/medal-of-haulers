@@ -89,11 +89,11 @@ with `mix-blend-mode: screen` to drop its dark ground out. If a
 transparent-background version turns up, use it and remove the blend mode from
 `src/components/ui/Logo.tsx`.
 
-### 4. Set the real domain
+### 4. Domain
 
-`SITE_URL` in `src/lib/metadata.ts` defaults to `https://medalofhaulers.com`.
-Override with `NEXT_PUBLIC_SITE_URL`. It drives canonicals, OpenGraph, the
-sitemap, and robots.txt.
+`medalofhaulers.com`, registered on the client's own Cloudflare account.
+`SITE_URL` in `src/lib/metadata.ts` defaults to it; `NEXT_PUBLIC_SITE_URL`
+overrides. It drives canonicals, OpenGraph, the sitemap, and robots.txt.
 
 ## Deployment
 
@@ -139,7 +139,7 @@ ship the wrong canonical URLs.
 | --- | --- |
 | Build command | `npm run build:production` |
 | Output directory | `out` |
-| Environment variable | `NEXT_PUBLIC_SITE_URL` = `https://<the-domain>` |
+| Environment variable | `NEXT_PUBLIC_SITE_URL` = `https://medalofhaulers.com` |
 | Environment variable | `NODE_VERSION` = `22` |
 
 Because the domain is in the same Cloudflare account, attaching it under

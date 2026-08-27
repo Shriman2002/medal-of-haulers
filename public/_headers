@@ -1,0 +1,13 @@
+# Cloudflare Pages reads this from the deployed output root.
+# Deliberately no Content-Security-Policy: the site loads only same-origin
+# assets today, but a CSP is easy to get subtly wrong and breaks the page when
+# it is. Worth adding once someone can verify it against the live site.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+# Next fingerprints these filenames, so a given URL's contents never change.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
