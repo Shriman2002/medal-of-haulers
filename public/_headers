@@ -1,4 +1,4 @@
-# Cloudflare Pages reads this from the deployed output root.
+# Served by Cloudflare Workers static assets from the deployed output root.
 # Deliberately no Content-Security-Policy: the site loads only same-origin
 # assets today, but a CSP is easy to get subtly wrong and breaks the page when
 # it is. Worth adding once someone can verify it against the live site.
@@ -7,6 +7,12 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
+
+# Workers also serves this site on a *.workers.dev URL. Left alone, Google can
+# index that copy and it competes with medalofhaulers.com as duplicate content.
+# The custom domain is unaffected by this rule.
+https://:worker.:account.workers.dev/*
+  X-Robots-Tag: noindex
 
 # Next fingerprints these filenames, so a given URL's contents never change.
 /_next/static/*

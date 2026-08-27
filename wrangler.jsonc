@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "medal-of-haulers",
+  "compatibility_date": "2026-08-26",
+
+  // Assets only — there is deliberately no "main" and no "binding" here.
+  // The site is a fully static export; nothing needs a Worker script to run.
+  // (Wrangler rejects an ASSETS binding when there is no "main".)
+  "assets": {
+    "directory": "./out",
+
+    // Workers requires this to be explicit. Pages used to guess from the
+    // presence of 404.html; Workers serves a bare 404 unless told otherwise.
+    "not_found_handling": "404-page"
+  }
+}
