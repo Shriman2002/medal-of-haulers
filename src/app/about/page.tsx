@@ -5,9 +5,9 @@ import { PhotoPlaceholder } from "@/components/ui/PhotoPlaceholder";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "About",
+  title: "Veteran-Owned Moving Company in Northern Virginia",
   description:
-    "Medal of Haulers is a veteran-owned moving, junk removal, and donation pickup company built on hard work, integrity, and respect for your belongings.",
+    "Medal of Haulers is a veteran-owned moving, junk removal, and donation pickup company serving Northern Virginia, DC, and Richmond — built on hard work and integrity.",
   path: "/about",
 });
 

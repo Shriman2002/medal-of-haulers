@@ -6,9 +6,9 @@ import { FaqAccordion } from "@/components/sections/FaqAccordion";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "FAQ",
+  title: "Moving & Junk Removal FAQ — Northern Virginia",
   description:
-    "Answers about our moving, junk removal, and donation pickup services — pricing, scheduling, what we haul, and what to expect on the day.",
+    "Answers about moving, junk removal, and donation pickup in Northern Virginia and DC — pricing, scheduling, what we haul, and what to expect on the day.",
   path: "/faq",
 });
 

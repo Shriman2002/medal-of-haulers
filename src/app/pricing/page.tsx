@@ -4,9 +4,9 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Pricing",
+  title: "Moving & Hauling Prices in Northern Virginia",
   description:
-    "Moving from a $100 base plus hourly, junk removal from $100 base plus per item, donation pickup from $50 base. Upfront pricing, free estimates.",
+    "Moving from a $100 base plus hourly, junk removal from $100 plus per item, donation pickup from $50. Upfront pricing across Northern Virginia and DC.",
   path: "/pricing",
 });
 

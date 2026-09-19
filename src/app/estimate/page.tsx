@@ -5,9 +5,9 @@ import { EstimateForm } from "@/components/estimate/EstimateForm";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Request Estimate",
+  title: "Free Moving Estimate in Northern Virginia & DC",
   description:
-    "Send your item list and photos for a free, no-obligation estimate on moving, junk removal, or donation pickup across the DMV and Virginia.",
+    "Get a free, no-obligation quote on moving, junk removal, or donation pickup in Northern Virginia, DC, and Maryland. Call 571-585-3536 or send your details.",
   path: "/estimate",
 });
 

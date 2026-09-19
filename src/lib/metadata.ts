@@ -31,26 +31,74 @@ export const FORM_MODE: FormMode =
   (process.env.NEXT_PUBLIC_FORM_MODE as FormMode | undefined) ??
   (process.env.NEXT_PUBLIC_DEMO_MODE === "1" ? "demo" : "live");
 
-/** Per-page metadata with a canonical URL, sharing one title template. */
+/**
+ * Absolute URL for a route, matching how the page is actually served.
+ *
+ * The static export uses trailingSlash, so canonicals resolve to /services/.
+ * og:url and the sitemap must agree with the canonical, or three signals give
+ * search engines three slightly different addresses for the same page.
+ */
+export function canonicalUrl(path: string): string {
+  if (path === "/") return `${SITE_URL}/`;
+  const trailing = process.env.STATIC_EXPORT === "1" ? "/" : "";
+  return `${SITE_URL}${path}${trailing}`;
+}
+
+/**
+ * The share card, generated at build time by src/app/opengraph-image.tsx.
+ *
+ * Referenced explicitly on every page rather than left to inheritance: Next
+ * merges metadata shallowly, so a page that sets its own `openGraph` *replaces*
+ * the parent's — image included. Relying on inheritance left every page except
+ * home sharing as a bare link.
+ */
+const SHARE_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  type: "image/png",
+  alt: "Medal of Haulers — veteran-owned moving, junk removal, and donation pickup in the DMV, Northern Virginia, and Richmond",
+};
+
+/**
+ * Per-page metadata: canonical URL, Open Graph, and Twitter card.
+ *
+ * `title` goes through the root layout's "%s | Medal of Haulers" template. The
+ * home page must pass `absoluteTitle` instead — a template never applies to
+ * the segment that defines it, so without this the home page title would not
+ * contain the business name at all.
+ */
 export function pageMetadata({
   title,
+  absoluteTitle,
   description,
   path,
 }: {
-  title: string;
+  title?: string;
+  absoluteTitle?: string;
   description: string;
   path: string;
 }): Metadata {
+  const fullTitle = absoluteTitle ?? `${title} | Medal of Haulers`;
+
   return {
-    title,
+    title: absoluteTitle ? { absolute: absoluteTitle } : title,
     description,
     alternates: { canonical: path },
     openGraph: {
-      title: `${title} | Medal of Haulers`,
+      title: fullTitle,
       description,
-      url: `${SITE_URL}${path}`,
+      url: canonicalUrl(path),
       siteName: "Medal of Haulers",
+      locale: "en_US",
       type: "website",
+      images: [SHARE_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+      images: [SHARE_IMAGE.url],
     },
   };
 }

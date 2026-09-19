@@ -14,9 +14,9 @@ import { PhotoPlaceholder } from "@/components/ui/PhotoPlaceholder";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Veteran-Owned Moving, Junk Removal & Donation Pickup",
+  absoluteTitle: "Veteran-Owned Movers in Northern Virginia & DC | Medal of Haulers",
   description:
-    "Medal of Haulers provides veteran-owned moving, junk removal, and donation pickup across the DMV, Northern Virginia, and Richmond. Free estimates, upfront pricing.",
+    "Veteran-owned moving, junk removal & donation pickup in Northern Virginia, DC, Maryland & Richmond. Free estimates, upfront pricing. Call 571-585-3536.",
   path: "/",
 });
 

@@ -5,9 +5,9 @@ import { PhotoPlaceholder } from "@/components/ui/PhotoPlaceholder";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Services",
+  title: "Moving & Junk Removal in Northern Virginia",
   description:
-    "Moving, junk removal, and donation pickup for homes, apartments, offices, and businesses across the DMV, Northern Virginia, and Richmond.",
+    "Home, apartment, and office moves, junk removal, and donation pickup across Northern Virginia, DC, Maryland, and Richmond. Veteran-owned. Free estimates.",
   path: "/services",
 });
 

@@ -10,8 +10,8 @@ import { FacebookIcon, InstagramIcon } from "@/components/ui/BrandIcons";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Contact",
-  description: `Call ${CONTACT.phone} or email ${CONTACT.email}. Serving Washington D.C., Northern Virginia, Maryland, and Virginia south through Richmond.`,
+  title: `Call ${CONTACT.phone} — Northern Virginia Movers`,
+  description: `Call ${CONTACT.phone} or email ${CONTACT.email}. Veteran-owned movers serving Washington DC, Northern Virginia, Maryland, and Virginia south through Richmond.`,
   path: "/contact",
 });
 
